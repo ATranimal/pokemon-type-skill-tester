@@ -1,5 +1,6 @@
 <script>
   import { onMount } from "svelte";
+  import TypeBox from "./components/TypeBox.svelte";
 
   export let typeChart;
 
@@ -11,7 +12,10 @@
 
   onMount(() => {
     typeChart.forEach(type => {
-      weakTypes = [...weakTypes, { name: type.name, selected: false }];
+      weakTypes = [
+        ...weakTypes,
+        { name: type.name, selected: false, colour: type.colour }
+      ];
     });
   });
 
@@ -42,13 +46,27 @@
     padding: 1em;
     max-width: 960px;
     margin: 0 auto;
+    background-image: linear-gradient(
+      to bottom right,
+      rgb(178, 219, 214),
+      rgb(240, 240, 204)
+    );
   }
 
   .type-selector {
+    padding: 0 240px;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    flex-wrap: wrap;
   }
 
+  .type {
+    margin: 0px;
+  }
+
+  .submit {
+    margin: 32px;
+  }
   .active {
     border: 1px black solid;
   }
@@ -56,17 +74,24 @@
 
 <main>
   <h1>Pokemon Type Skill Tester</h1>
-  <h3>What types are {currentType.name} pokemon weak to?</h3>
+  <h3>
+    What types are
+    <TypeBox type={currentType} />
+    pokemon weak to?
+  </h3>
 
   <div class="type-selector">
     {#each weakTypes as type}
-      <p class:active={type.selected} on:mousedown={handleTypeSelected}>
-        {type.name}
-      </p>
+      <div
+        class="type"
+        class:active={type.selected}
+        on:mousedown={handleTypeSelected}>
+        <TypeBox {type} />
+      </div>
     {/each}
   </div>
 
-  <button on:mousedown={submitAnswers}>Submit answers!</button>
+  <button class="submit" on:mousedown={submitAnswers}>Submit answers!</button>
 
   <div class="answers">
     {#each weakAnswers as answer}

@@ -23,7 +23,8 @@ let BattleTypeChart = [
       Rock: 1,
       Steel: 0,
       Water: 0
-    }
+    },
+    colour: "#a8b821"
   },
   {
     name: "Dark",
@@ -46,7 +47,8 @@ let BattleTypeChart = [
       Rock: 0,
       Steel: 0,
       Water: 0
-    }
+    },
+    colour: "#6f574a"
   },
   {
     name: "Dragon",
@@ -69,7 +71,8 @@ let BattleTypeChart = [
       Rock: 0,
       Steel: 0,
       Water: 2
-    }
+    },
+    colour: "#6d36f3"
   },
   {
     name: "Electric",
@@ -92,7 +95,8 @@ let BattleTypeChart = [
       Rock: 0,
       Steel: 2,
       Water: 0
-    }
+    },
+    colour: "#fdcc32"
   },
   {
     name: "Fairy",
@@ -115,7 +119,8 @@ let BattleTypeChart = [
       Rock: 0,
       Steel: 1,
       Water: 0
-    }
+    },
+    colour: "#dda6df"
   },
   {
     name: "Fighting",
@@ -138,7 +143,8 @@ let BattleTypeChart = [
       Rock: 2,
       Steel: 0,
       Water: 0
-    }
+    },
+    colour: "#be302c"
   },
   {
     name: "Fire",
@@ -161,7 +167,8 @@ let BattleTypeChart = [
       Rock: 1,
       Steel: 2,
       Water: 1
-    }
+    },
+    colour: "#f07e35"
   },
   {
     name: "Flying",
@@ -184,7 +191,8 @@ let BattleTypeChart = [
       Rock: 1,
       Steel: 0,
       Water: 0
-    }
+    },
+    colour: "#ad93f8"
   },
   {
     name: "Ghost",
@@ -207,7 +215,8 @@ let BattleTypeChart = [
       Rock: 0,
       Steel: 0,
       Water: 0
-    }
+    },
+    colour: "#705798"
   },
   {
     name: "Grass",
@@ -230,7 +239,8 @@ let BattleTypeChart = [
       Rock: 0,
       Steel: 0,
       Water: 2
-    }
+    },
+    colour: "#77c94b"
   },
   {
     name: "Ground",
@@ -253,7 +263,8 @@ let BattleTypeChart = [
       Rock: 2,
       Steel: 0,
       Water: 1
-    }
+    },
+    colour: "#ddbc6d"
   },
   {
     name: "Ice",
@@ -276,7 +287,8 @@ let BattleTypeChart = [
       Rock: 1,
       Steel: 1,
       Water: 0
-    }
+    },
+    colour: "#98d8d8"
   },
   {
     name: "Normal",
@@ -299,7 +311,8 @@ let BattleTypeChart = [
       Rock: 0,
       Steel: 0,
       Water: 0
-    }
+    },
+    colour: "#a7a775"
   },
   {
     name: "Poison",
@@ -322,7 +335,8 @@ let BattleTypeChart = [
       Rock: 0,
       Steel: 0,
       Water: 0
-    }
+    },
+    colour: "#a4419c"
   },
   {
     name: "Psychic",
@@ -345,7 +359,8 @@ let BattleTypeChart = [
       Rock: 0,
       Steel: 0,
       Water: 0
-    }
+    },
+    colour: "#ff5383"
   },
   {
     name: "Rock",
@@ -368,7 +383,8 @@ let BattleTypeChart = [
       Rock: 0,
       Steel: 1,
       Water: 1
-    }
+    },
+    colour: "#b99e51"
   },
   {
     name: "Steel",
@@ -391,7 +407,8 @@ let BattleTypeChart = [
       Rock: 2,
       Steel: 2,
       Water: 0
-    }
+    },
+    colour: "#b8b9ce"
   },
   {
     name: "Water",
@@ -414,7 +431,8 @@ let BattleTypeChart = [
       Rock: 0,
       Steel: 2,
       Water: 2
-    }
+    },
+    colour: "#6c8ef0"
   }
 ];
 
