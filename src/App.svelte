@@ -70,6 +70,12 @@
   .active {
     border: 1px black solid;
   }
+
+  @media (max-width: 960px) {
+    .type-selector {
+      padding: 0px;
+    }
+  }
 </style>
 
 <main>
