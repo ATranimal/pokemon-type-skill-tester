@@ -7,36 +7,95 @@
   let currentType = typeChart[Math.floor(Math.random() * typeChart.length)];
   const types = Object.keys(currentType.damageTaken);
 
-  let weakTypes = [];
+  let weakChoices = [];
   let weakAnswers = [];
 
+  let resistChoices = [];
+  let resistAnswers = [];
+
+  let submitted = false;
+
   onMount(() => {
+    resetWeakChoices();
+    resetResistChoices();
+  });
+
+  const resetWeakChoices = () => {
+    weakChoices = [];
     typeChart.forEach(type => {
-      weakTypes = [
-        ...weakTypes,
+      weakChoices = [
+        ...weakChoices,
         { name: type.name, selected: false, colour: type.colour }
       ];
     });
-  });
+  };
 
-  const handleTypeSelected = e => {
-    const newTypeName = e.target.innerText;
-
-    const indexOfSelectedType = weakTypes.findIndex(type => {
-      return type.name === newTypeName;
+  const resetResistChoices = () => {
+    resistChoices = [];
+    typeChart.forEach(type => {
+      resistChoices = [
+        ...resistChoices,
+        { name: type.name, selected: false, colour: type.colour }
+      ];
     });
+  };
 
-    weakTypes[indexOfSelectedType].selected = !weakTypes[indexOfSelectedType]
-      .selected;
+  const handleWeakTypeSelected = e => {
+    if (!submitted) {
+      const newTypeName = e.target.innerText;
+
+      const indexOfSelectedType = weakChoices.findIndex(type => {
+        return type.name === newTypeName;
+      });
+
+      weakChoices[indexOfSelectedType].selected = !weakChoices[
+        indexOfSelectedType
+      ].selected;
+    }
+  };
+
+  const handleResistTypeSelected = e => {
+    if (!submitted) {
+      const newTypeName = e.target.innerText;
+
+      const indexOfSelectedType = resistChoices.findIndex(type => {
+        return type.name === newTypeName;
+      });
+
+      resistChoices[indexOfSelectedType].selected = !resistChoices[
+        indexOfSelectedType
+      ].selected;
+    }
   };
 
   const submitAnswers = () => {
+    submitted = true;
+
+    // TODO: Colour the answers so its accurate
     if (weakAnswers.length === 0)
       types.forEach(type => {
         if (currentType.damageTaken[type] === 1) {
           weakAnswers = [...weakAnswers, type];
         }
       });
+
+    if (resistAnswers.length === 0)
+      types.forEach(type => {
+        if (
+          currentType.damageTaken[type] === 2 ||
+          currentType.damageTaken[type] === 3
+        ) {
+          resistAnswers = [...resistAnswers, type];
+        }
+      });
+  };
+
+  const resetGame = () => {
+    submitted = false;
+    currentType = typeChart[Math.floor(Math.random() * typeChart.length)];
+    resetWeakChoices();
+    resetResistChoices();
+    weakAnswers = [];
   };
 </script>
 
@@ -53,6 +112,10 @@
     );
   }
 
+  button {
+    border-radius: 2px;
+  }
+
   .type-selector {
     padding: 0 240px;
     display: flex;
@@ -65,10 +128,21 @@
   }
 
   .submit {
-    margin: 32px;
+    margin: 8px 32px;
   }
+
   .active {
     border: 1px black solid;
+  }
+
+  .answer-row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .answer-row p {
+    margin: 16px 32px;
   }
 
   @media (max-width: 960px) {
@@ -87,11 +161,24 @@
   </h3>
 
   <div class="type-selector">
-    {#each weakTypes as type}
+    {#each weakChoices as type}
       <div
         class="type"
         class:active={type.selected}
-        on:mousedown={handleTypeSelected}>
+        on:mousedown={handleWeakTypeSelected}>
+        <TypeBox {type} />
+      </div>
+    {/each}
+  </div>
+
+  <h3>What types do they resist / are they immune to?</h3>
+
+  <div class="type-selector">
+    {#each resistChoices as type}
+      <div
+        class="type"
+        class:active={type.selected}
+        on:mousedown={handleResistTypeSelected}>
         <TypeBox {type} />
       </div>
     {/each}
@@ -99,9 +186,24 @@
 
   <button class="submit" on:mousedown={submitAnswers}>Submit answers!</button>
 
-  <div class="answers">
-    {#each weakAnswers as answer}
-      <p>{answer}</p>
-    {/each}
+  {#if submitted}
+    <div class="answers">
+      <h3>The answers for weak are:</h3>
+      <div class="answer-row">
+        {#each weakAnswers as answer}
+          <p>{answer}</p>
+        {/each}
+      </div>
+      <h3>The answers for resist / immune are:</h3>
+      <div class="answer-row">
+        {#each resistAnswers as answer}
+          <p>{answer}</p>
+        {/each}
+      </div>
+    </div>
+  {/if}
+
+  <div class="reset">
+    <button on:mouseup={resetGame}>Try Again?</button>
   </div>
 </main>
