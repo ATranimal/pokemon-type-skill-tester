@@ -96,6 +96,9 @@
     resetWeakChoices();
     resetResistChoices();
     weakAnswers = [];
+    resistAnswers = [];
+
+    window.scrollTo(0, 0);
   };
 </script>
 
