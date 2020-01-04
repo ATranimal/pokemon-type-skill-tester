@@ -71,21 +71,62 @@
   const submitAnswers = () => {
     submitted = true;
 
-    // TODO: Colour the answers so its accurate
     if (weakAnswers.length === 0)
       types.forEach(type => {
-        if (currentType.damageTaken[type] === 1) {
-          weakAnswers = [...weakAnswers, type];
+        const [weakChoice] = weakChoices.filter(choice => choice.name === type);
+
+        if (currentType.damageTaken[type] === 1 && weakChoice.selected) {
+          weakAnswers = [...weakAnswers, { type: type, correct: "correct" }];
+        } else if (
+          currentType.damageTaken[type] === 1 &&
+          !weakChoice.selected
+        ) {
+          weakAnswers = [
+            ...weakAnswers,
+            { type: `Missing: ${type}`, correct: "incorrect" }
+          ];
+        } else if (currentType.damageTaken[type] !== 1 && weakChoice.selected) {
+          weakAnswers = [
+            ...weakAnswers,
+            { type: `Incorrectly chose: ${type}`, correct: "incorrect" }
+          ];
         }
       });
 
     if (resistAnswers.length === 0)
       types.forEach(type => {
+        const [resistChoice] = resistChoices.filter(
+          choice => choice.name === type
+        );
         if (
-          currentType.damageTaken[type] === 2 ||
-          currentType.damageTaken[type] === 3
+          (currentType.damageTaken[type] === 2 ||
+            currentType.damageTaken[type] === 3) &&
+          resistChoice.selected
         ) {
-          resistAnswers = [...resistAnswers, type];
+          resistAnswers = [
+            ...resistAnswers,
+            { type: type, correct: "correct" }
+          ];
+        } else if (
+          (currentType.damageTaken[type] === 2 ||
+            currentType.damageTaken[type] === 3) &&
+          !resistChoice.selected
+        ) {
+          resistAnswers = [
+            ...resistAnswers,
+            { type: `Missing: ${type}`, correct: "incorrect" }
+          ];
+        } else if (
+          !(
+            currentType.damageTaken[type] === 2 ||
+            currentType.damageTaken[type] === 3
+          ) &&
+          resistChoice.selected
+        ) {
+          resistAnswers = [
+            ...resistAnswers,
+            { type: `Incorrectly chose: ${type}`, correct: "incorrect" }
+          ];
         }
       });
   };
@@ -148,6 +189,14 @@
     margin: 16px 32px;
   }
 
+  .correct {
+    color: rgb(15, 97, 15);
+  }
+
+  .incorrect {
+    color: rgb(124, 13, 13);
+  }
+
   @media (max-width: 960px) {
     .type-selector {
       padding: 0px;
@@ -194,13 +243,13 @@
       <h3>The answers for weak are:</h3>
       <div class="answer-row">
         {#each weakAnswers as answer}
-          <p>{answer}</p>
+          <p class={answer.correct}>{answer.type}</p>
         {/each}
       </div>
       <h3>The answers for resist / immune are:</h3>
       <div class="answer-row">
         {#each resistAnswers as answer}
-          <p>{answer}</p>
+          <p class={answer.correct}>{answer.type}</p>
         {/each}
       </div>
     </div>
