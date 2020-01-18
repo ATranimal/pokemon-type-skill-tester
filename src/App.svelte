@@ -1,6 +1,10 @@
 <script>
   import { onMount } from "svelte";
+  import { fade } from "svelte/transition";
+
   import TypeBox from "./components/TypeBox.svelte";
+  import TypeSelector from "./components/TypeSelector.svelte";
+  import SubmitAnswers from "./components/SubmitAnswers.svelte";
 
   export let typeChart;
 
@@ -40,97 +44,6 @@
     });
   };
 
-  const handleWeakTypeSelected = e => {
-    if (!submitted) {
-      const newTypeName = e.target.innerText;
-
-      const indexOfSelectedType = weakChoices.findIndex(type => {
-        return type.name === newTypeName;
-      });
-
-      weakChoices[indexOfSelectedType].selected = !weakChoices[
-        indexOfSelectedType
-      ].selected;
-    }
-  };
-
-  const handleResistTypeSelected = e => {
-    if (!submitted) {
-      const newTypeName = e.target.innerText;
-
-      const indexOfSelectedType = resistChoices.findIndex(type => {
-        return type.name === newTypeName;
-      });
-
-      resistChoices[indexOfSelectedType].selected = !resistChoices[
-        indexOfSelectedType
-      ].selected;
-    }
-  };
-
-  const submitAnswers = () => {
-    submitted = true;
-
-    if (weakAnswers.length === 0)
-      types.forEach(type => {
-        const [weakChoice] = weakChoices.filter(choice => choice.name === type);
-
-        if (currentType.damageTaken[type] === 1 && weakChoice.selected) {
-          weakAnswers = [...weakAnswers, { type: type, correct: "correct" }];
-        } else if (
-          currentType.damageTaken[type] === 1 &&
-          !weakChoice.selected
-        ) {
-          weakAnswers = [
-            ...weakAnswers,
-            { type: `Missing: ${type}`, correct: "incorrect" }
-          ];
-        } else if (currentType.damageTaken[type] !== 1 && weakChoice.selected) {
-          weakAnswers = [
-            ...weakAnswers,
-            { type: `Incorrectly chose: ${type}`, correct: "incorrect" }
-          ];
-        }
-      });
-
-    if (resistAnswers.length === 0)
-      types.forEach(type => {
-        const [resistChoice] = resistChoices.filter(
-          choice => choice.name === type
-        );
-        if (
-          (currentType.damageTaken[type] === 2 ||
-            currentType.damageTaken[type] === 3) &&
-          resistChoice.selected
-        ) {
-          resistAnswers = [
-            ...resistAnswers,
-            { type: type, correct: "correct" }
-          ];
-        } else if (
-          (currentType.damageTaken[type] === 2 ||
-            currentType.damageTaken[type] === 3) &&
-          !resistChoice.selected
-        ) {
-          resistAnswers = [
-            ...resistAnswers,
-            { type: `Missing: ${type}`, correct: "incorrect" }
-          ];
-        } else if (
-          !(
-            currentType.damageTaken[type] === 2 ||
-            currentType.damageTaken[type] === 3
-          ) &&
-          resistChoice.selected
-        ) {
-          resistAnswers = [
-            ...resistAnswers,
-            { type: `Incorrectly chose: ${type}`, correct: "incorrect" }
-          ];
-        }
-      });
-  };
-
   const resetGame = () => {
     submitted = false;
     currentType = typeChart[Math.floor(Math.random() * typeChart.length)];
@@ -160,25 +73,6 @@
     border-radius: 2px;
   }
 
-  .type-selector {
-    padding: 0 240px;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
-  .type {
-    margin: 0px;
-  }
-
-  .submit {
-    margin: 8px 32px;
-  }
-
-  .active {
-    border: 1px black solid;
-  }
-
   .answer-row {
     display: flex;
     justify-content: center;
@@ -196,12 +90,6 @@
   .incorrect {
     color: rgb(124, 13, 13);
   }
-
-  @media (max-width: 960px) {
-    .type-selector {
-      padding: 0px;
-    }
-  }
 </style>
 
 <main>
@@ -212,31 +100,20 @@
     pokemon weak to?
   </h3>
 
-  <div class="type-selector">
-    {#each weakChoices as type}
-      <div
-        class="type"
-        class:active={type.selected}
-        on:mousedown={handleWeakTypeSelected}>
-        <TypeBox {type} />
-      </div>
-    {/each}
-  </div>
+  <TypeSelector {submitted} bind:choices={weakChoices} />
 
   <h3>What types do they resist / are they immune to?</h3>
 
-  <div class="type-selector">
-    {#each resistChoices as type}
-      <div
-        class="type"
-        class:active={type.selected}
-        on:mousedown={handleResistTypeSelected}>
-        <TypeBox {type} />
-      </div>
-    {/each}
-  </div>
+  <TypeSelector {submitted} bind:choices={resistChoices} />
 
-  <button class="submit" on:mousedown={submitAnswers}>Submit answers!</button>
+  <SubmitAnswers
+    bind:submitted
+    bind:weakAnswers
+    bind:resistAnswers
+    {types}
+    {currentType}
+    {weakChoices}
+    {resistChoices} />
 
   {#if submitted}
     <div class="answers">
@@ -253,9 +130,9 @@
         {/each}
       </div>
     </div>
+    <div class="reset">
+      <button on:mouseup={resetGame}>Try Again?</button>
+    </div>
   {/if}
 
-  <div class="reset">
-    <button on:mouseup={resetGame}>Try Again?</button>
-  </div>
 </main>
