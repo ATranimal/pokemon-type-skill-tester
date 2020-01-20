@@ -2,6 +2,7 @@
   import { Router, Link, Route } from "svelte-routing";
 
   import App from "./App.svelte";
+  import Home from "./Home.svelte";
 
   export let url = "";
   export let typeChart;
@@ -29,7 +30,8 @@
     </div>
   </nav>
   <div>
-    <!-- <Route path="/" component={Home} /> -->
+    <Route path="/" component={Home} />
+    <Route path="home" component={Home} />
     <Route path="single" component={App} {typeChart} />
   </div>
 </Router>

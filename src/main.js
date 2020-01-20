@@ -1,4 +1,3 @@
-import App from "./App.svelte";
 import Routes from "./Routes.svelte";
 import BattleTypeChart from "./data/typechart";
 

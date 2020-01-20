@@ -5,6 +5,7 @@
   import TypeBox from "./components/TypeBox.svelte";
   import TypeSelector from "./components/TypeSelector.svelte";
   import SubmitAnswers from "./components/SubmitAnswers.svelte";
+  import Timer from "./components/Timer.svelte";
 
   export let typeChart;
 
@@ -135,4 +136,7 @@
     </div>
   {/if}
 
+  <div class="timer-container">
+    <Timer />
+  </div>
 </main>

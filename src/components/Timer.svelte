@@ -1,9 +1,5 @@
 <script>
   let currentTime = 0;
-
-  onMount() {
-    setInterval()
-  }
 </script>
 
 <div class="timer">
