@@ -137,6 +137,6 @@
   {/if}
 
   <div class="timer-container">
-    <Timer />
+    <Timer {submitted} />
   </div>
 </main>
