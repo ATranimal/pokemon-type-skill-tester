@@ -19,6 +19,10 @@
   .navigation-link {
     margin: 0 8px;
   }
+
+  body {
+    background-color: rgb(178, 219, 214);
+  }
 </style>
 
 <Router {url}>

@@ -1,3 +1,7 @@
+<script>
+  import { blur } from "svelte/transition";
+</script>
+
 <style>
   main {
     background-image: linear-gradient(
@@ -12,10 +16,11 @@
     padding: 1em;
     max-width: 960px;
     margin: 0 auto;
+    min-height: 960px;
   }
 </style>
 
-<main>
+<main transition:blur>
   <div class="container">
     <h1>Pokeskill Home</h1>
   </div>

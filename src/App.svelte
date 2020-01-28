@@ -1,6 +1,6 @@
 <script>
   import { onMount } from "svelte";
-  import { fade } from "svelte/transition";
+  import { blur, fade } from "svelte/transition";
 
   import TypeBox from "./components/TypeBox.svelte";
   import TypeSelector from "./components/TypeSelector.svelte";
@@ -101,11 +101,11 @@
   }
 </style>
 
-<main>
+<main transition:blur>
   <div class="container">
-    <h1>Pokemon Type Skill Tester</h1>
+    <h1 transition:fade={{ delay: 400 }}>Pokemon Type Skill Tester</h1>
 
-    <div class="current-type-box">
+    <div class="current-type-box" transition:fade={{ delay: 400 }}>
       <h3>
         What types are
         <TypeBox type={currentType} />
@@ -113,11 +113,17 @@
       </h3>
     </div>
 
-    <TypeSelector {submitted} bind:choices={weakChoices} />
+    <div transition:fade={{ delay: 400 }}>
+      <TypeSelector {submitted} bind:choices={weakChoices} />
+    </div>
 
-    <h3>What types do they resist / are they immune to?</h3>
+    <h3 transition:fade={{ delay: 400 }}>
+      What types do they resist / are they immune to?
+    </h3>
 
-    <TypeSelector {submitted} bind:choices={resistChoices} />
+    <div transition:fade={{ delay: 400 }}>
+      <TypeSelector {submitted} bind:choices={resistChoices} />
+    </div>
 
     <SubmitAnswers
       bind:submitted
