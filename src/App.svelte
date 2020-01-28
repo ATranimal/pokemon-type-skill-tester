@@ -59,15 +59,23 @@
 
 <style>
   main {
-    text-align: center;
-    padding: 1em;
-    max-width: 960px;
-    margin: 0 auto;
     background-image: linear-gradient(
       to bottom right,
       rgb(178, 219, 214),
       rgb(240, 240, 204)
     );
+  }
+
+  .container {
+    text-align: center;
+    padding: 1em;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  .current-type-box {
+    display: flex;
+    justify-content: center;
   }
 
   button {
@@ -94,49 +102,54 @@
 </style>
 
 <main>
-  <h1>Pokemon Type Skill Tester</h1>
-  <h3>
-    What types are
-    <TypeBox type={currentType} />
-    pokemon weak to?
-  </h3>
+  <div class="container">
+    <h1>Pokemon Type Skill Tester</h1>
 
-  <TypeSelector {submitted} bind:choices={weakChoices} />
-
-  <h3>What types do they resist / are they immune to?</h3>
-
-  <TypeSelector {submitted} bind:choices={resistChoices} />
-
-  <SubmitAnswers
-    bind:submitted
-    bind:weakAnswers
-    bind:resistAnswers
-    {types}
-    {currentType}
-    {weakChoices}
-    {resistChoices} />
-
-  {#if submitted}
-    <div class="answers">
-      <h3>The answers for weak are:</h3>
-      <div class="answer-row">
-        {#each weakAnswers as answer}
-          <p class={answer.correct}>{answer.type}</p>
-        {/each}
-      </div>
-      <h3>The answers for resist / immune are:</h3>
-      <div class="answer-row">
-        {#each resistAnswers as answer}
-          <p class={answer.correct}>{answer.type}</p>
-        {/each}
-      </div>
+    <div class="current-type-box">
+      <h3>
+        What types are
+        <TypeBox type={currentType} />
+        pokemon weak to?
+      </h3>
     </div>
-    <div class="reset">
-      <button on:mouseup={resetGame}>Try Again?</button>
-    </div>
-  {/if}
 
-  <div class="timer-container">
-    <Timer {submitted} />
+    <TypeSelector {submitted} bind:choices={weakChoices} />
+
+    <h3>What types do they resist / are they immune to?</h3>
+
+    <TypeSelector {submitted} bind:choices={resistChoices} />
+
+    <SubmitAnswers
+      bind:submitted
+      bind:weakAnswers
+      bind:resistAnswers
+      {types}
+      {currentType}
+      {weakChoices}
+      {resistChoices} />
+
+    {#if submitted}
+      <div class="answers">
+        <h3>The answers for weak are:</h3>
+        <div class="answer-row">
+          {#each weakAnswers as answer}
+            <p class={answer.correct}>{answer.type}</p>
+          {/each}
+        </div>
+        <h3>The answers for resist / immune are:</h3>
+        <div class="answer-row">
+          {#each resistAnswers as answer}
+            <p class={answer.correct}>{answer.type}</p>
+          {/each}
+        </div>
+      </div>
+      <div class="reset">
+        <button on:mouseup={resetGame}>Try Again?</button>
+      </div>
+    {/if}
+
+    <div class="timer-container">
+      <Timer {submitted} />
+    </div>
   </div>
 </main>
