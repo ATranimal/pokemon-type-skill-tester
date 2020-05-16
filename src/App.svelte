@@ -18,7 +18,12 @@
   let resistChoices = [];
   let resistAnswers = [];
 
+  let score = 0;
+  let currentRound = 1;
+  let maxRounds = 5;
+
   let submitted = false;
+  let finished = false;
 
   onMount(() => {
     resetWeakChoices();
@@ -46,14 +51,19 @@
   };
 
   const resetGame = () => {
-    submitted = false;
-    currentType = typeChart[Math.floor(Math.random() * typeChart.length)];
-    resetWeakChoices();
-    resetResistChoices();
-    weakAnswers = [];
-    resistAnswers = [];
+    if (currentRound !== maxRounds) {
+      currentRound++;
+      submitted = false;
+      currentType = typeChart[Math.floor(Math.random() * typeChart.length)];
+      resetWeakChoices();
+      resetResistChoices();
+      weakAnswers = [];
+      resistAnswers = [];
 
-    window.scrollTo(0, 0);
+      window.scrollTo(0, 0);
+    } else {
+      finished = true;
+    }
   };
 </script>
 
@@ -64,6 +74,25 @@
       rgb(178, 219, 214),
       rgb(240, 240, 204)
     );
+    height: 100%;
+  }
+
+  .answer-row-correct {
+    display: flex;
+    align-items: center;
+    min-height: 32px;
+  }
+
+  .answer-row-incorrect {
+    display: flex;
+    align-items: center;
+    min-height: 32px;
+  }
+
+  .answer-row-missing {
+    display: flex;
+    align-items: center;
+    min-height: 32px;
   }
 
   .container {
@@ -79,17 +108,18 @@
   }
 
   button {
-    border-radius: 2px;
+    font-weight: 600;
+    border-radius: 8px;
+    background-color: rgb(108, 156, 151);
+    color: rgb(219, 255, 252);
   }
 
   .answer-row {
     display: flex;
+    align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-  }
-
-  .answer-row p {
-    margin: 16px 32px;
+    flex-direction: column;
   }
 
   .correct {
@@ -99,63 +129,142 @@
   .incorrect {
     color: rgb(124, 13, 13);
   }
+
+  .score {
+    position: fixed;
+    bottom: 32px;
+    left: 32px;
+  }
+
+  .finished {
+    position: absolute;
+    top: 48%;
+    left: 42%;
+    font-size: 32px;
+  }
 </style>
 
 <main transition:blur>
   <div class="container">
-    <h1 transition:fade={{ delay: 400 }}>Pokemon Type Skill Tester</h1>
-
-    <div class="current-type-box" transition:fade={{ delay: 400 }}>
-      <h3>
-        What types are
-        <TypeBox type={currentType} />
-        pokemon weak to?
-      </h3>
+    <div class:score={!finished} class:finished>
+      {#if finished}
+        <div>{`Final Score: ${score}`}</div>
+        <button
+          style="margin-top: 16px"
+          on:mousedown={() => {
+            location.reload();
+          }}>
+          Try again?
+        </button>
+      {/if}
+      {#if !finished}
+        {`Current Round: ${currentRound} - Current Score: ${score}`}
+      {/if}
     </div>
 
-    <div transition:fade={{ delay: 400 }}>
-      <TypeSelector {submitted} bind:choices={weakChoices} />
-    </div>
+    {#if !finished}
+      <h1 in:fade={{ delay: 400 }}>Pokemon Type Skill Tester</h1>
 
-    <h3 transition:fade={{ delay: 400 }}>
-      What types do they resist / are they immune to?
-    </h3>
-
-    <div transition:fade={{ delay: 400 }}>
-      <TypeSelector {submitted} bind:choices={resistChoices} />
-    </div>
-
-    <SubmitAnswers
-      bind:submitted
-      bind:weakAnswers
-      bind:resistAnswers
-      {types}
-      {currentType}
-      {weakChoices}
-      {resistChoices} />
-
-    {#if submitted}
-      <div class="answers">
-        <h3>The answers for weak are:</h3>
-        <div class="answer-row">
-          {#each weakAnswers as answer}
-            <p class={answer.correct}>{answer.type}</p>
-          {/each}
-        </div>
-        <h3>The answers for resist / immune are:</h3>
-        <div class="answer-row">
-          {#each resistAnswers as answer}
-            <p class={answer.correct}>{answer.type}</p>
-          {/each}
-        </div>
+      <div class="current-type-box" in:fade={{ delay: 400 }}>
+        <h3>
+          What types are
+          <TypeBox type={currentType} />
+          pokemon weak to?
+        </h3>
       </div>
-      <div class="reset">
-        <button on:mouseup={resetGame}>Try Again?</button>
-      </div>
+
+      {#if !submitted}
+        <div in:fade={{ delay: 400 }}>
+          <TypeSelector
+            {submitted}
+            bind:choices={weakChoices}
+            bind:answers={weakAnswers} />
+        </div>
+
+        <h3 in:fade={{ delay: 400 }}>
+          What types do they resist / are they immune to?
+        </h3>
+
+        <div in:fade={{ delay: 400 }}>
+          <TypeSelector
+            {submitted}
+            bind:choices={resistChoices}
+            bind:answers={resistAnswers} />
+        </div>
+
+        <SubmitAnswers
+          bind:submitted
+          bind:weakAnswers
+          bind:resistAnswers
+          bind:score
+          {typeChart}
+          {types}
+          {currentType}
+          {weakChoices}
+          {resistChoices} />
+      {/if}
+
+      {#if submitted}
+        <div class="answers">
+          <h3>The answers for weak are:</h3>
+          <div class="answer-row">
+            <div class="answer-row-correct">
+              Correct:
+              {#each weakAnswers as answer}
+                {#if answer.correct === 'correct'}
+                  <TypeBox type={answer.type} />
+                {/if}
+              {/each}
+            </div>
+            <div class="answer-row-incorrect">
+              Incorrect:
+              {#each weakAnswers as answer}
+                {#if answer.correct === 'incorrect'}
+                  <TypeBox type={answer.type} />
+                {/if}
+              {/each}
+            </div>
+            <div class="answer-row-missing">
+              Missing:
+              {#each weakAnswers as answer}
+                {#if answer.correct === 'missing'}
+                  <TypeBox type={answer.type} />
+                {/if}
+              {/each}
+            </div>
+          </div>
+          <h3>The answers for resist / immune are:</h3>
+          <div class="answer-row">
+            <div class="answer-row-correct">
+              Correct:
+              {#each resistAnswers as answer}
+                {#if answer.correct === 'correct'}
+                  <TypeBox type={answer.type} />
+                {/if}
+              {/each}
+            </div>
+            <div class="answer-row-incorrect">
+              Incorrect:
+              {#each resistAnswers as answer}
+                {#if answer.correct === 'incorrect'}
+                  <TypeBox type={answer.type} />
+                {/if}
+              {/each}
+            </div>
+            <div class="answer-row-missing">
+              Missing:
+              {#each resistAnswers as answer}
+                {#if answer.correct === 'missing'}
+                  <TypeBox type={answer.type} />
+                {/if}
+              {/each}
+            </div>
+          </div>
+        </div>
+        <div class="reset">
+          <button on:mouseup={resetGame}>Next</button>
+        </div>
+      {/if}
     {/if}
-
-    <div class="timer-container">
-      <Timer {submitted} />
-    </div>
   </div>
 </main>

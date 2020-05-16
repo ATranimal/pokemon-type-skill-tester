@@ -2,6 +2,7 @@
   import TypeBox from "./TypeBox.svelte";
 
   export let choices;
+  export let answers;
   export let submitted;
 
   const handleTypeSelected = e => {
@@ -16,12 +17,26 @@
         .selected;
     }
   };
+
+  const checkIfActive = type => {
+    return type.selected;
+  };
 </script>
 
 <style>
   .active {
-    border: 1px rgb(5, 133, 238) solid;
-    border-radius: 5px;
+    border: 2px rgb(5, 133, 238) solid;
+    border-radius: 10px;
+  }
+
+  .right {
+    border: 2px #26df34 solid;
+    border-radius: 10px;
+  }
+
+  .wrong {
+    border: 2px #ca0606 solid;
+    border-radius: 10px;
   }
 
   .type-selector {
@@ -35,6 +50,10 @@
     margin: 0px;
   }
 
+  .type:hover {
+    opacity: 0.65;
+  }
+
   @media (max-width: 960px) {
     .type-selector {
       padding: 0px;
@@ -46,7 +65,7 @@
   {#each choices as type}
     <div
       class="type"
-      class:active={type.selected}
+      class:active={checkIfActive(type)}
       on:mousedown={handleTypeSelected}>
       <TypeBox {type} />
     </div>

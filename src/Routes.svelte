@@ -26,17 +26,7 @@
 </style>
 
 <Router {url}>
-  <nav class="navigation-bar">
-    <div class="navigation-link">
-      <Link to="/">Home</Link>
-    </div>
-    <div class="navigation-link">
-      <Link to="/single">Single Type</Link>
-    </div>
-  </nav>
-  <div>
-    <Route path="/" component={Home} />
-    <Route path="home" component={Home} />
-    <Route path="single" component={App} {typeChart} />
-  </div>
+
+  <Route path="/" component={Home} />
+  <Route path="type" component={App} {typeChart} />
 </Router>
