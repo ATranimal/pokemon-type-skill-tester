@@ -69,11 +69,6 @@
 
 <style>
   main {
-    background-image: linear-gradient(
-      to bottom right,
-      rgb(178, 219, 214),
-      rgb(240, 240, 204)
-    );
     height: 100%;
   }
 
@@ -96,9 +91,13 @@
   }
 
   .container {
+    background-image: linear-gradient(
+      to bottom right,
+      rgb(178, 219, 214),
+      rgb(240, 240, 204)
+    );
     text-align: center;
     padding: 1em;
-    max-width: 960px;
     margin: 0 auto;
   }
 
@@ -132,8 +131,13 @@
 
   .score {
     position: fixed;
-    bottom: 32px;
-    left: 32px;
+    top: 16px;
+    left: 16px;
+    opacity: 0.6;
+    border-radius: 8px;
+    color: rgb(218, 235, 199);
+    background-color: rgb(39, 53, 23);
+    padding: 2px 4px;
   }
 
   .finished {
@@ -141,6 +145,15 @@
     top: 48%;
     left: 42%;
     font-size: 32px;
+  }
+
+  .selector-div {
+    display: flex;
+    justify-content: center;
+  }
+
+  .title {
+    margin-top: 32px;
   }
 </style>
 
@@ -163,7 +176,7 @@
     </div>
 
     {#if !finished}
-      <h1 in:fade={{ delay: 400 }}>Pokemon Type Skill Tester</h1>
+      <h1 class="title" in:fade={{ delay: 400 }}>Pokemon Type Skill Tester</h1>
 
       <div class="current-type-box" in:fade={{ delay: 400 }}>
         <h3>
@@ -174,7 +187,7 @@
       </div>
 
       {#if !submitted}
-        <div in:fade={{ delay: 400 }}>
+        <div class="selector-div" in:fade={{ delay: 400 }}>
           <TypeSelector
             {submitted}
             bind:choices={weakChoices}
@@ -185,7 +198,7 @@
           What types do they resist / are they immune to?
         </h3>
 
-        <div in:fade={{ delay: 400 }}>
+        <div class="selector-div" in:fade={{ delay: 400 }}>
           <TypeSelector
             {submitted}
             bind:choices={resistChoices}

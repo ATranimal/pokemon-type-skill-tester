@@ -18,7 +18,6 @@
     padding: 1em;
     max-width: 960px;
     margin: 0 auto;
-    min-height: 960px;
   }
 
   .information {

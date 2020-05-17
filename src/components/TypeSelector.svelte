@@ -40,10 +40,10 @@
   }
 
   .type-selector {
-    padding: 0 240px;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+    max-width: 480px;
   }
 
   .type {

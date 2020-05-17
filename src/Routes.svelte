@@ -22,6 +22,7 @@
 
   body {
     background-color: rgb(178, 219, 214);
+    padding: 0px;
   }
 </style>
 
