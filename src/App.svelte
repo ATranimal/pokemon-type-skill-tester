@@ -121,14 +121,6 @@
     flex-direction: column;
   }
 
-  .correct {
-    color: rgb(15, 97, 15);
-  }
-
-  .incorrect {
-    color: rgb(124, 13, 13);
-  }
-
   .score {
     position: fixed;
     top: 16px;
@@ -141,10 +133,12 @@
   }
 
   .finished {
-    position: absolute;
-    top: 48%;
-    left: 42%;
-    font-size: 32px;
+    display: flex;
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
   }
 
   .selector-div {
@@ -158,7 +152,7 @@
 </style>
 
 <main transition:blur>
-  <div class="container">
+  <div class="container" class:finished>
     <div class:score={!finished} class:finished>
       {#if finished}
         <div>{`Final Score: ${score}`}</div>
